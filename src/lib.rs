@@ -210,6 +210,7 @@ impl ModalSpinner {
     }
 
     /// Closes the spinner.
+    #[allow(clippy::missing_const_for_fn)]
     pub fn close(&mut self) {
         self.state = SpinnerState::Closed;
         self.fading_out = self.fade_out;
