@@ -286,7 +286,7 @@ impl ModalSpinner {
                     .max_rect(screen_rect)
                     .layout(egui::Layout::top_down(egui::Align::Center));
 
-                ui.allocate_new_ui(child_ui, |ui| {
+                ui.scope_builder(child_ui, |ui| {
                     self.ui_update_spinner(ui, &screen_rect);
                     content(ui);
                 });
