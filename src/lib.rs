@@ -247,7 +247,7 @@ impl ModalSpinner {
         }
 
         let id = self.id.unwrap_or_else(|| egui::Id::from("_modal_spinner"));
-        let screen_rect = ctx.input(|i| i.screen_rect);
+        let content_rect = ctx.input(egui::InputState::content_rect);
 
         let opacity = ctx.animate_bool_with_easing(
             id.with("fade_out"),
@@ -263,7 +263,7 @@ impl ModalSpinner {
         let re = egui::Area::new(id)
             .movable(false)
             .interactable(true)
-            .fixed_pos(screen_rect.left_top())
+            .fixed_pos(content_rect.left_top())
             .fade_in(self.fade_in)
             .show(ctx, |ui| {
                 if self.fading_out {
@@ -279,16 +279,16 @@ impl ModalSpinner {
                 });
 
                 ui.painter()
-                    .rect_filled(screen_rect, egui::CornerRadius::ZERO, fill_color);
+                    .rect_filled(content_rect, egui::CornerRadius::ZERO, fill_color);
 
-                ui.allocate_response(screen_rect.size(), egui::Sense::click());
+                ui.allocate_response(content_rect.size(), egui::Sense::click());
 
                 let child_ui = egui::UiBuilder::new()
-                    .max_rect(screen_rect)
+                    .max_rect(content_rect)
                     .layout(egui::Layout::top_down(egui::Align::Center));
 
                 ui.scope_builder(child_ui, |ui| {
-                    self.ui_update_spinner(ui, &screen_rect);
+                    self.ui_update_spinner(ui, &content_rect);
                     content(ui);
                 });
             });
@@ -305,7 +305,7 @@ impl ModalSpinner {
         let mut margin = screen_rect.height() / 2.0 - spinner_h / 2.0;
 
         if self.show_elapsed_time {
-            let height = ui.fonts(|f| f.row_height(&egui::TextStyle::Body.resolve(ui.style())));
+            let height = ui.fonts_mut(|f| f.row_height(&egui::TextStyle::Body.resolve(ui.style())));
             margin -= ui.spacing().item_spacing.y.mul_add(2.0, height / 2.0);
         }
 
