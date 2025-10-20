@@ -1,6 +1,6 @@
 # egui-modal-spinner changelog
 
-## Unreleased
+## 2025-10-20 - v0.5.0 - egui update
 
 ### 🚨 Breaking Changes
 
