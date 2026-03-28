@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### 🚨 Breaking Changes
+
+- Update `egui` from `0.33.0` to `0.34.0` [#22](https://github.com/jannistpl/egui-modal-spinner/pull/22)
+
 ### 📚 Documentation
 
 - Update license year to `2026` [#21](https://github.com/jannistpl/egui-modal-spinner/pull/21)

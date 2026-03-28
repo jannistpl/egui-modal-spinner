@@ -35,7 +35,7 @@
 //!         }
 //!     }
 //!
-//!     pub fn update(&mut self, ctx: &egui::Context, ui: &mut egui::Ui) {
+//!     pub fn ui(&mut self, ui: &mut egui::Ui) {
 //!         if ui.button("Download some data").clicked() {
 //!             // Create a new thread to execute the task
 //!             let (tx, rx) = mpsc::channel();
@@ -61,11 +61,11 @@
 //!         }
 //!
 //!         // >>> Update the spinner
-//!         self.spinner.update(ctx);
+//!         self.spinner.update(ui);
 //!
 //!         // Alternatively, you can also display your own UI below the spinner.
 //!         // This is useful when you want to display the status of the currently running task.
-//!         self.spinner.update_with_content(ctx, |ui| {
+//!         self.spinner.update_with_content(ui, |ui| {
 //!             ui.label("Downloading some data...");
 //!         })
 //!     }
@@ -220,8 +220,8 @@ impl ModalSpinner {
     /// spinner to be visible.
     ///
     /// This has no effect if the `SpinnerState` is currently not `SpinnerState::Open`.
-    pub fn update(&mut self, ctx: &egui::Context) {
-        self.update_ui(ctx, |_| ());
+    pub fn update(&mut self, ui: &egui::Ui) {
+        self.update_ui(ui, |_| ());
     }
 
     /// Main update method of the spinner that should be called every frame if you want the
@@ -234,22 +234,22 @@ impl ModalSpinner {
     /// content on the Y-axis is not recommended.
     ///
     /// This has no effect if the `SpinnerState` is currently not `SpinnerState::Open`.
-    pub fn update_with_content(&mut self, ctx: &egui::Context, ui: impl FnOnce(&mut egui::Ui)) {
-        self.update_ui(ctx, ui);
+    pub fn update_with_content(&mut self, ui: &egui::Ui, add_contents: impl FnOnce(&mut egui::Ui)) {
+        self.update_ui(ui, add_contents);
     }
 }
 
 /// UI methods
 impl ModalSpinner {
-    fn update_ui(&mut self, ctx: &egui::Context, content: impl FnOnce(&mut egui::Ui)) {
+    fn update_ui(&mut self, ui: &egui::Ui, content: impl FnOnce(&mut egui::Ui)) {
         if self.state != SpinnerState::Open && !self.fading_out {
             return;
         }
 
         let id = self.id.unwrap_or_else(|| egui::Id::from("_modal_spinner"));
-        let content_rect = ctx.input(egui::InputState::content_rect);
+        let content_rect = ui.input(egui::InputState::content_rect);
 
-        let opacity = ctx.animate_bool_with_easing(
+        let opacity = ui.animate_bool_with_easing(
             id.with("fade_out"),
             self.state == SpinnerState::Open,
             egui::emath::easing::cubic_out,
@@ -265,13 +265,13 @@ impl ModalSpinner {
             .interactable(true)
             .fixed_pos(content_rect.left_top())
             .fade_in(self.fade_in)
-            .show(ctx, |ui| {
+            .show(ui.ctx(), |ui| {
                 if self.fading_out {
                     ui.multiply_opacity(opacity);
                 }
 
                 let fill_color = self.fill_color.unwrap_or_else(|| {
-                    if ctx.style().visuals.dark_mode {
+                    if ui.style().visuals.dark_mode {
                         egui::Color32::from_black_alpha(120)
                     } else {
                         egui::Color32::from_white_alpha(40)
@@ -293,7 +293,7 @@ impl ModalSpinner {
                 });
             });
 
-        ctx.move_to_top(re.response.layer_id);
+        ui.move_to_top(re.response.layer_id);
     }
 
     fn ui_update_spinner(&self, ui: &mut egui::Ui, screen_rect: &egui::Rect) {
