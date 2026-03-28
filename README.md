@@ -17,7 +17,7 @@ The following example shows the basic use of the spinner with [eframe](https://g
 Cargo.toml:
 ```toml
 [dependencies]
-eframe = "0.32"
+eframe = "0.34"
 egui-modal-spinner = "0.4.0"
 ```
 
@@ -45,8 +45,8 @@ impl MyApp {
 }
 
 impl eframe::App for MyApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::CentralPanel::default().show_inside(ui, |ui| {
             if ui.button("Download some data").clicked() {
                 // Create a new thread to execute the task
                 let (tx, rx) = mpsc::channel();
@@ -72,11 +72,11 @@ impl eframe::App for MyApp {
             }
 
             // >>> Update the spinner
-            self.spinner.update(ctx);
+            self.spinner.update(ui);
 
             // Alternatively, you can also display your own UI below the spinner.
             // This is useful when you want to display the status of the currently running task.
-            self.spinner.update_with_content(ctx, |ui| {
+            self.spinner.update_with_content(ui, |ui| {
                 ui.label("Downloading some data...");
             })
         });

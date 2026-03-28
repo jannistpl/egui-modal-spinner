@@ -84,10 +84,10 @@ impl MyApp {
 }
 
 impl eframe::App for MyApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        ctx.style_mut(|s| s.animation_time = 0.1);
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        ui.style_mut().animation_time = 0.1;
 
-        egui::CentralPanel::default().show(ctx, |ui| {
+        egui::CentralPanel::default().show_inside(ui, |ui| {
             ui.heading("My egui application");
             egui::widgets::global_theme_preference_buttons(ui);
 
@@ -99,7 +99,7 @@ impl eframe::App for MyApp {
 
             self.update_task_thread();
 
-            self.spinner.update_with_content(ctx, |ui| {
+            self.spinner.update_with_content(ui, |ui| {
                 if let Some(s) = &self.thread_state {
                     ui.add_space(ui.spacing().item_spacing.y);
                     ui.label(s.to_string());
