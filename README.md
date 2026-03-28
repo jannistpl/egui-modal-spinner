@@ -18,7 +18,7 @@ Cargo.toml:
 ```toml
 [dependencies]
 eframe = "0.34"
-egui-modal-spinner = "0.4.0"
+egui-modal-spinner = "0.6.0"
 ```
 
 main.rs:

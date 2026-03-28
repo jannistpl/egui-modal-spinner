@@ -10,8 +10,8 @@
 //! Cargo.toml:
 //! ```toml
 //! [dependencies]
-//! eframe = "0.29"
-//! egui-modal-spinner = "0.1.0"
+//! eframe = "0.34"
+//! egui-modal-spinner = "0.6.0"
 //! ```
 //!
 //! main.rs:
