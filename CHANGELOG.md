@@ -1,5 +1,11 @@
 # egui-modal-spinner changelog
 
+## Unreleased
+
+### 📚 Documentation
+
+- Update license year to `2026` [#21](https://github.com/jannistpl/egui-modal-spinner/pull/21)
+
 ## 2025-10-20 - v0.5.0 - egui update
 
 ### 🚨 Breaking Changes
