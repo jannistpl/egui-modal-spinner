@@ -1,5 +1,11 @@
 # egui-modal-spinner changelog
 
+## Unreleased
+
+### 🚨 Breaking Changes
+
+- Update `egui` from `0.34.0` to `0.35.0` [#24](https://github.com/jannistpl/egui-modal-spinner/pull/24)
+
 ## 2026-03-28 - v0.6.0 - egui update
 
 ### 🚨 Breaking Changes
